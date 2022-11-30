@@ -12,6 +12,12 @@ package com.mycompany.banheiro.unissex;
 public class BanheiroUnissex {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+
+        System.out.println("Iniciando fila");
+        FilaBanheiro filaBanheiro = new FilaBanheiro(4);
+        filaBanheiro.iniciarFila();
+        filaBanheiro.abrirBanheiro();
+
     }
+
 }
