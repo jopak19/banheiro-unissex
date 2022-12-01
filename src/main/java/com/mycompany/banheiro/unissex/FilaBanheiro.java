@@ -3,23 +3,22 @@ package com.mycompany.banheiro.unissex;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 
+
 public class FilaBanheiro {
-
-    private final BlockingQueue<Pessoa> fila;
-
+	private final BlockingQueue<Pessoa> fila;
+    
     private int id;
     Banheiro banheiro;
 
-    public FilaBanheiro(int tamanho) {
-        banheiro = new Banheiro(4);
-        fila = new LinkedBlockingQueue<Pessoa>();//new LinkedList<>();
-        id = 0;
-
-    }
-
+    public FilaBanheiro(int capacidade) {
+        banheiro = new Banheiro(capacidade);
+        this.id = 0;
+		fila = new LinkedBlockingQueue<Pessoa>(); //Lista de pessoas para entrar 
+	}
     public void iniciarFila(){
         new Thread(() -> {
             while (true) {
@@ -34,65 +33,40 @@ public class FilaBanheiro {
 
     public void abrirBanheiro(){
         System.out.println("Abrindo banheiro");
+
         new Thread(() -> {
             while (true){
-
                 if (!(fila.size() > 0)){
                     espera(500);
                     continue;
                 }
-                String sexo = "";
-                List<Pessoa> pessoasParaEntrar = new ArrayList<>();
-                List<Future<String>> status = new ArrayList<>();
-                System.out.println("tamanho da fila: " + fila.size());
-
-                if (fila.peek() != null) {
-                    sexo = fila.peek().getSexo();
-
-                } else {
-                    System.out.println("Não é possível o funcionamento da fila sem informação de sexo");
-                }
-
-                while (true){
-                    if (fila.peek() == null){
-                        break;
+                String sexo = ""; //garantir que so chegue depois de terminar
+                List<Callable<String>> noBanheiro = new  ArrayList<>();
+                
+                do{
+                    if(fila.peek().getSexo().equals(sexo) || sexo.equals("")){
+                        sexo = fila.peek().getSexo();
+                        noBanheiro.add(fila.poll());
+                    }else{
+                        try {
+                            if(noBanheiro != null){
+                                List<Future<String>> status = banheiro.banheiroExecutor.invokeAll(noBanheiro);
+                                noBanheiro.clear();
+                                sexo = "";
+                            }  
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();   
+                        }
                     }
-                    if (!sexo.equals(fila.peek().getSexo())){
-                        break;
-                    }
-                    pessoasParaEntrar.add(fila.poll());
-                }
-
-                for (Pessoa pessoa : pessoasParaEntrar) {
-                    status.add(banheiro.addPessoa(pessoa));
-                }
-
-                for (Future<String> future : status) {
-                    try {
-                        String threadStatus = future.get();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                System.out.println("todas as pessoas sairam do banheiro");
+                   }while(fila.peek() != null);
             }
-        }).start();
+        }
+        ).start();
     }
 
     public void addPessoa(Pessoa pessoa){
         fila.add(pessoa);
     }
-
-    private void espera(int min, int max){
-        int random = (int) (Math.random() * (max - min)) + min;
-        try {
-            Thread.sleep(random * 1000L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void espera(int milisegundos){
         try {
             Thread.sleep(milisegundos);
@@ -109,5 +83,4 @@ public class FilaBanheiro {
             return "F";
         }
     }
-
 }
