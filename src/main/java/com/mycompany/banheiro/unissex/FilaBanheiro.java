@@ -40,13 +40,16 @@ public class FilaBanheiro {
                     espera(500);
                     continue;
                 }
-                String sexo = ""; //garantir que so chegue depois de terminar
+                String sexo = ""; 
                 List<Callable<String>> noBanheiro = new  ArrayList<>();
                 
                 do{
+                    //adiciona na fila pro banheiro, em ordem todos com mesmo sexo até acher alguem de sexo diferente
+
                     if(fila.peek().getSexo().equals(sexo) || sexo.equals("")){
                         sexo = fila.peek().getSexo();
                         noBanheiro.add(fila.poll());
+                        
                     }else{
                         try {
                             if(noBanheiro != null){
