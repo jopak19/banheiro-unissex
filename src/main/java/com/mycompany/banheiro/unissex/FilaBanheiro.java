@@ -1,21 +1,21 @@
 package com.mycompany.banheiro.unissex;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class FilaBanheiro {
 
-    private final Queue<Pessoa> fila;
+    private final BlockingQueue<Pessoa> fila;
 
     private int id;
     Banheiro banheiro;
 
     public FilaBanheiro(int tamanho) {
         banheiro = new Banheiro(4);
-        fila = new LinkedList<>();
+        fila = new LinkedBlockingQueue<Pessoa>();//new LinkedList<>();
         id = 0;
 
     }
