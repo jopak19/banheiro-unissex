@@ -3,6 +3,7 @@ package com.mycompany.banheiro.unissex;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -42,7 +43,7 @@ public class FilaBanheiro {
                     continue;
                 }
                 String sexo = "";
-                List<Pessoa> pessoasParaEntrar = new ArrayList<>();
+                List<Callable<String>> pessoasParaEntrar = new ArrayList<>();
                 List<Future<String>> status = new ArrayList<>();
                 System.out.println("tamanho da fila: " + fila.size());
 
@@ -62,18 +63,14 @@ public class FilaBanheiro {
                     }
                     pessoasParaEntrar.add(fila.poll());
                 }
-
-                for (Pessoa pessoa : pessoasParaEntrar) {
-                    status.add(banheiro.addPessoa(pessoa));
+                
+                try {
+                    status = banheiro.banheiroExecutor.invokeAll(pessoasParaEntrar);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
 
-                for (Future<String> future : status) {
-                    try {
-                        String threadStatus = future.get();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+                
 
                 System.out.println("todas as pessoas sairam do banheiro");
             }

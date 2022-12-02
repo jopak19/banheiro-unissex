@@ -6,7 +6,7 @@ import java.util.concurrent.Future;
 
 public class Banheiro {
 
-    private final ExecutorService banheiroExecutor;
+    final ExecutorService banheiroExecutor;
 
     public Banheiro(int vagas) {
         banheiroExecutor = Executors.newFixedThreadPool(vagas);
