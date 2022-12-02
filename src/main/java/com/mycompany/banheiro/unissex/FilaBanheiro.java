@@ -21,6 +21,10 @@ public class FilaBanheiro {
 
     }
 
+    /**
+     * Cria uma nova Thread responsável por produzir e
+     * adicionar pessoas na fila para entrar no banheiro
+     */
     public void iniciarFila(){
         new Thread(() -> {
             while (true) {
@@ -33,6 +37,9 @@ public class FilaBanheiro {
         }).start();
     }
 
+    /*
+     * Organiza a entrada ao banheiro, conforme as regras de restrição
+     */ 
     public void abrirBanheiro(){
         System.out.println("Abrindo banheiro");
         new Thread(() -> {
@@ -53,7 +60,7 @@ public class FilaBanheiro {
                 } else {
                     System.out.println("Não é possível o funcionamento da fila sem informação de sexo");
                 }
-
+                // Adiciona todas as pessoas do mesmo sexo da ponta da fila como pessoas para entrar
                 while (true){
                     if (fila.peek() == null){
                         break;
@@ -65,6 +72,10 @@ public class FilaBanheiro {
                 }
                 
                 try {
+                    /* Invoca todos as pessoas com permissão de entrada (do mesmo sexo),
+                     * deixa a organização das vagas do banheiro com a ThreadPool de tamanho fixo e 
+                     * aguarda a execução de todas elas
+                     */
                     status = banheiro.banheiroExecutor.invokeAll(pessoasParaEntrar);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -77,10 +88,18 @@ public class FilaBanheiro {
         }).start();
     }
 
+    
+    /** 
+     * @param pessoa
+     */
     public void addPessoa(Pessoa pessoa){
         fila.add(pessoa);
     }
 
+    
+    /** 
+     * @param milisegundos
+     */
     private void espera(int milisegundos){
         try {
             Thread.sleep(milisegundos);
@@ -89,6 +108,10 @@ public class FilaBanheiro {
         }
     }
 
+    
+    /** 
+     * @return String
+     */
     private String getSexoAleatorio(){
         int random = (int) (Math.random() * 2) + 1;
         if (random == 1){

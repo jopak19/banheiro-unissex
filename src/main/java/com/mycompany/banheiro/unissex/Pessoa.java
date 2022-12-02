@@ -12,10 +12,18 @@ public class Pessoa implements Callable<String> {
         this.id = id;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getSexo() {
         return sexo;
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getId() {
         return id;
     }
@@ -29,6 +37,13 @@ public class Pessoa implements Callable<String> {
         }
     }
 
+    
+    /** 
+     * @return String
+     * @throws Exception
+     * 
+     * Tarefa de usar o banheiro e retorna o status
+     */
     @Override
     public String call() throws Exception {
         System.out.println("Pessoa " + id + " do sexo " + sexo + " entrou no banheiro");

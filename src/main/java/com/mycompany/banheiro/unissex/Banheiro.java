@@ -13,6 +13,11 @@ public class Banheiro {
 
     }
 
+    
+    /** 
+     * @param pessoa
+     * @return Future<String>
+     */
     public Future<String> addPessoa(Pessoa pessoa) {
         return banheiroExecutor.submit(pessoa);
 
