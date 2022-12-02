@@ -14,8 +14,8 @@ public class FilaBanheiro {
     Banheiro banheiro;
 
     public FilaBanheiro(int tamanho) {
-        banheiro = new Banheiro(4);
-        fila = new LinkedBlockingQueue<Pessoa>();//new LinkedList<>();
+        banheiro = new Banheiro(tamanho);
+        fila = new LinkedBlockingQueue<Pessoa>();
         id = 0;
 
     }
@@ -82,15 +82,6 @@ public class FilaBanheiro {
 
     public void addPessoa(Pessoa pessoa){
         fila.add(pessoa);
-    }
-
-    private void espera(int min, int max){
-        int random = (int) (Math.random() * (max - min)) + min;
-        try {
-            Thread.sleep(random * 1000L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private void espera(int milisegundos){
