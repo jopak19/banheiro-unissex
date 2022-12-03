@@ -12,11 +12,15 @@ public class FilaBanheiro {
 
     private int id;
     Banheiro banheiro;
+
+    private final int capacidade;
     private boolean executando = true;
 
 
-    public FilaBanheiro(int tamanho) {
-        banheiro = new Banheiro(tamanho);
+
+    public FilaBanheiro(int vagas) {
+        banheiro = new Banheiro(vagas);
+        capacidade = vagas;
         fila = new LinkedBlockingQueue<Pessoa>();
         id = 0;
 
@@ -51,7 +55,7 @@ public class FilaBanheiro {
      * Organiza a entrada ao banheiro, conforme as regras de restrição
      */ 
     public void abrirBanheiro(){
-        System.out.println("Banheiro aberto");
+        System.out.println("Banheiro aberto com " + capacidade + " vagas");
         new Thread(() -> {
             while (true){
 

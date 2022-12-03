@@ -19,14 +19,6 @@ public class Pessoa implements Callable<String> {
         return sexo;
     }
 
-    
-    /** 
-     * @return int
-     */
-    public int getId() {
-        return id;
-    }
-
     private void usarBanheiro() {
         int random = (int) (Math.random() * (5 - 1)) + 1;
         try {
