@@ -10,6 +10,7 @@ public class BanheiroUnissex {
      */
     public static void main(String[] args) {
 
+        
 
         FilaBanheiro filaBanheiro = new FilaBanheiro(CAPACIDADE);
         filaBanheiro.iniciarFila();
@@ -20,9 +21,14 @@ public class BanheiroUnissex {
                 "a qualquer momento digite qualquer tecla e aperte enter\n\n\n");
         Scanner scanner = new Scanner(System.in);
 
-        scanner.nextLine();
-        filaBanheiro.setExecutando(false);
       
+        try {
+            scanner.nextLine();
+            filaBanheiro.setExecutando(false);
+        } catch (Exception e) {
+            System.out.println("Não obteve entrada para fim de execução");
+        }
+        scanner.close();
         
     }
         
