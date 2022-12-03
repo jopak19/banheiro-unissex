@@ -11,7 +11,7 @@ respeitando a condição que apenas pessoas do mesmo sexo estejam utilizando o b
 
 ```
 +─banheiro-unissex                                     
-   ├──docs
+   ├──doc
    └──src
       └──main  
           └──java
@@ -23,6 +23,11 @@ respeitando a condição que apenas pessoas do mesmo sexo estejam utilizando o b
                         └─── BanheiroUnissex.java
                         └─── FilaBanheiro.java
                         └─── Pessoa.java
+   └── README.md
+   └── Relatório - banheiro unissex.pdf
+   └── pom.xml
+   └── .gitignore
+   
 
 ```
 ## Executar 
