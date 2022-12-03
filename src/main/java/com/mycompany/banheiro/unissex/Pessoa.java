@@ -12,7 +12,6 @@ public class Pessoa implements Callable<String> {
         this.id = id;
     }
 
-    
     /** 
      * @return String
      */
@@ -37,7 +36,6 @@ public class Pessoa implements Callable<String> {
         }
     }
 
-    
     /** 
      * @return String
      * @throws Exception

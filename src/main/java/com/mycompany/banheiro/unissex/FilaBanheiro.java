@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class FilaBanheiro {
@@ -13,6 +12,8 @@ public class FilaBanheiro {
 
     private int id;
     Banheiro banheiro;
+    private boolean executando = true;
+
 
     public FilaBanheiro(int tamanho) {
         banheiro = new Banheiro(tamanho);
@@ -21,13 +22,22 @@ public class FilaBanheiro {
 
     }
 
+    public void setExecutando(boolean executando) {
+        this.executando = executando;
+    }
+
     /**
      * Cria uma nova Thread responsável por produzir e
      * adicionar pessoas na fila para entrar no banheiro
      */
     public void iniciarFila(){
+        System.out.println("Iniciando fila do banheiro");
         new Thread(() -> {
             while (true) {
+                if(!executando){
+                    System.out.println("Encerrando fila");
+                    break;
+                }
                 espera(400);
                 String sexo = getSexoAleatorio();
                 Pessoa pessoa = new Pessoa(sexo, id);
@@ -41,26 +51,28 @@ public class FilaBanheiro {
      * Organiza a entrada ao banheiro, conforme as regras de restrição
      */ 
     public void abrirBanheiro(){
-        System.out.println("Abrindo banheiro");
+        System.out.println("Banheiro aberto");
         new Thread(() -> {
             while (true){
 
+                if(!executando){
+                    System.out.println("Banheiro fechado");
+                    banheiro.fecharBanheiro();
+                    break;
+                }
                 if (!(fila.size() > 0)){
                     espera(500);
                     continue;
                 }
                 String sexo = "";
                 List<Callable<String>> pessoasParaEntrar = new ArrayList<>();
-                List<Future<String>> status = new ArrayList<>();
-                System.out.println("tamanho da fila: " + fila.size());
-
                 if (fila.peek() != null) {
                     sexo = fila.peek().getSexo();
 
                 } else {
                     System.out.println("Não é possível o funcionamento da fila sem informação de sexo");
                 }
-                // Adiciona todas as pessoas do mesmo sexo da ponta da fila como pessoas para entrar
+
                 while (true){
                     if (fila.peek() == null){
                         break;
@@ -72,18 +84,12 @@ public class FilaBanheiro {
                 }
                 
                 try {
-                    /* Invoca todos as pessoas com permissão de entrada (do mesmo sexo),
-                     * deixa a organização das vagas do banheiro com a ThreadPool de tamanho fixo e 
-                     * aguarda a execução de todas elas
-                     */
-                    status = banheiro.banheiroExecutor.invokeAll(pessoasParaEntrar);
+                    banheiro.adicionarPessoas(pessoasParaEntrar);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
-                
-
-                System.out.println("todas as pessoas sairam do banheiro");
+                System.out.println("Todas as pessoas sairam do banheiro");
             }
         }).start();
     }
