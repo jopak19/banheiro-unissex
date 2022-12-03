@@ -18,6 +18,10 @@ public class FilaBanheiro {
 
 
 
+    /**
+     * Construtor parametizado
+     * @param vagas quantidade de vagas para confeccionar o banheiro
+     */
     public FilaBanheiro(int vagas) {
         banheiro = new Banheiro(vagas);
         capacidade = vagas;
@@ -26,6 +30,10 @@ public class FilaBanheiro {
 
     }
 
+    
+    /** 
+     * @param executando configuta o estado da fila do banheiro: exutando/fechado
+     */
     public void setExecutando(boolean executando) {
         this.executando = executando;
     }
@@ -100,7 +108,7 @@ public class FilaBanheiro {
 
     
     /** 
-     * @param pessoa
+     * @param pessoa Pessoa que será adicionada na fila do banheiro
      */
     public void addPessoa(Pessoa pessoa){
         fila.add(pessoa);
@@ -108,7 +116,7 @@ public class FilaBanheiro {
 
     
     /** 
-     * @param milisegundos
+     * @param milisegundos Tempo de espera em milisegundos
      */
     private void espera(int milisegundos){
         try {
@@ -120,7 +128,7 @@ public class FilaBanheiro {
 
     
     /** 
-     * @return String
+     * @return String Retorna um sexo aleatório para a Pessoa
      */
     private String getSexoAleatorio(){
         int random = (int) (Math.random() * 2) + 1;

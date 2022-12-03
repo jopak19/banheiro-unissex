@@ -7,18 +7,26 @@ public class Pessoa implements Callable<String> {
     private final String sexo;
     private final int id;
 
+    /**
+     * Construtor parametrizado de Pessoa
+     * @param sexo Sexo da Pessoa
+     * @param id Identificador da pessoa 
+     */
     public Pessoa(String sexo, int id) {
         this.sexo = sexo;
         this.id = id;
     }
 
     /** 
-     * @return String
+     * @return String Retorna o sexo da pessoa
      */
     public String getSexo() {
         return sexo;
     }
 
+    /**
+     * Simula a utilização do banheiro com tempo aleatório
+     */
     private void usarBanheiro() {
         int random = (int) (Math.random() * (5 - 1)) + 1;
         try {
@@ -29,8 +37,8 @@ public class Pessoa implements Callable<String> {
     }
 
     /** 
-     * @return String
-     * @throws Exception
+     * @return String Resultado  da tarefa
+     * @throws Exception Caso haja alguma excessão na execução das tarefas
      * 
      * Tarefa de usar o banheiro e retorna o status
      */

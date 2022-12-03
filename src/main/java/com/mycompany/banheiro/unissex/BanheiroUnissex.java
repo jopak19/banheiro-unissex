@@ -3,11 +3,10 @@ import java.util.Scanner;
 
 public class BanheiroUnissex {
 
-    static final int CAPACIDADE = 4;
 
     
     /** 
-     * @param args
+     * @param args Argumentos de inicialização
      */
     public static void main(String[] args) {
 

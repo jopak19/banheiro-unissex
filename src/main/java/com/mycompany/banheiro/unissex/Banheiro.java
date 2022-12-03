@@ -10,14 +10,27 @@ public class Banheiro {
 
     final ExecutorService banheiroExecutor;
 
+    /**
+     * Construtor parametrizado do banheiro
+     * @param vagas Quantidade de vagas do banheiro representado como fixed Thread Pool
+     */
     public Banheiro(int vagas) {
         banheiroExecutor = Executors.newFixedThreadPool(vagas);
     }
 
+    
+    /** 
+     * @param pessoas Pessoas que terão sua tarefa executadas (usar banheiro) na ThreadPool 
+     * @return List Lista de retorno das tarefas executadas
+     * @throws InterruptedException Caso haja problemas na execução
+     */
     public List<Future<String>> adicionarPessoas(List<Callable<String>> pessoas) throws InterruptedException {
         return banheiroExecutor.invokeAll(pessoas);
     }
 
+    /**
+     * Desliga a ThreadPool para finalizar o programa
+     */
     public void fecharBanheiro(){
         banheiroExecutor.shutdown();
     }
